@@ -1,1 +1,2 @@
-# Lab 6 - Starter
+# Lab 6 
+Dante and Ella
