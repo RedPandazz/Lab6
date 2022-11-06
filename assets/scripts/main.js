@@ -46,9 +46,9 @@ function addRecipesToDocument(recipes) {
   // A10
   let mainElement = document.querySelector('main');
   // A11
-  for(let i in recipes){
+  for(let i of recipes){
     const recipeCard = document.createElement('recipe-card');
-    recipeCard.data = recipes[i];
+    recipeCard.data = i;
     mainElement.append(recipeCard);
   }
 }
@@ -60,9 +60,11 @@ function addRecipesToDocument(recipes) {
  */
 function saveRecipesToStorage(recipes) {
   // EXPLORE - START (All explore numbers start with B)
-  // B1. TODO - Complete the functionality as described in this function
+  // B1. - Complete the functionality as described in this function
   //            header. It is possible in only a single line, but should
   //            be no more than a few lines.
+  // B1
+  localStorage.setItem('recipes', JSON.stringify(recipes));
 }
 
 /**
@@ -71,27 +73,57 @@ function saveRecipesToStorage(recipes) {
  */
 function initFormHandler() {
 
-  // B2. TODO - Get a reference to the <form> element
-  
-  // B3. TODO - Add an event listener for the 'submit' event, which fires when the
+  // B2. - Get a reference to the <form> element
+  // B2
+  let form = document.querySelector('form');
+  // B3. - Add an event listener for the 'submit' event, which fires when the
   //            submit button is clicked
-
+  // B3
+  const button = document.querySelector('button[type="submit"]');
   // Steps B4-B9 will occur inside the event listener from step B3
-  // B4. TODO - Create a new FormData object from the <form> element reference above
-  // B5. TODO - Create an empty object (I'll refer to this object as recipeObject to
+  // B4.  - Create a new FormData object from the <form> element reference above
+  // B5.  - Create an empty object (I'll refer to this object as recipeObject to
   //            make this easier to read), and then extract the keys and corresponding
   //            values from the FormData object and insert them into recipeObject
-  // B6. TODO - Create a new <recipe-card> element
-  // B7. TODO - Add the recipeObject data to <recipe-card> using element.data
-  // B8. TODO - Append this new <recipe-card> to <main>
-  // B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
+  // B6. - Create a new <recipe-card> element
+  // B7. - Add the recipeObject data to <recipe-card> using element.data
+  // B8. - Append this new <recipe-card> to <main>
+  // B9. - Get the recipes array from localStorage, add this new recipe to it, and
   //            then save the recipes array back to localStorage
-
-  // B10. TODO - Get a reference to the "Clear Local Storage" button
-  // B11. TODO - Add a click event listener to clear local storage button
-  
+  button.addEventListener('click', () => {
+    event.preventDefault();
+    // B4
+    let formData = new FormData(form);
+    // B5
+    let recipeObject = {};
+    for(const [key, value] of formData){
+      recipeObject[key] = value;
+    }
+    // B6
+    let recipeCard = document.createElement('recipe-card');
+    // B7
+    recipeCard.data = recipeObject;
+    // B8
+    let main = document.querySelector('main');
+    main.append(recipeCard);
+    // B9
+    let recipes = getRecipesFromStorage();
+    recipes.push(recipeObject);
+    saveRecipesToStorage(recipes);
+  }) 
+  // B10. - Get a reference to the "Clear Local Storage" button
+  // B10
+  let clearStorage = document.querySelector('button[type="button"]');
+  // B11. - Add a click event listener to clear local storage button
+  // B11
+  clearStorage.addEventListener('click', () => {
+    // B12
+    localStorage.setItem('recipes', JSON.stringify([]));
+    // B13
+    let main = document.querySelector('main');
+    main.innerHTML = ``;
+  });
   // Steps B12 & B13 will occur inside the event listener from step B11
-  // B12. TODO - Clear the local storage
-  // B13. TODO - Delete the contents of <main>
-
+  // B12. - Clear the local storage
+  // B13. - Delete the contents of <main>
 }
